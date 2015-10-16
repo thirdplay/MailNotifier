@@ -1,5 +1,4 @@
-﻿using MailNotifierPlugin.Models.Interface;
-using MetroTrilithon.Serialization;
+﻿using MetroTrilithon.Serialization;
 using System.Runtime.CompilerServices;
 
 namespace MailNotifierPlugin.Models.Settings
@@ -7,27 +6,32 @@ namespace MailNotifierPlugin.Models.Settings
     /// <summary>
     /// メール通知設定
     /// </summary>
-    public static class MailNotifierSettings
+    public class MailNotifierSettings
     {
+        /// <summary>
+        /// 有効状態
+        /// </summary>
+        public static SerializablePropertyBase<bool> IsEnabled { get; } = new SerializableProperty<bool>(GetKey(), Providers.Local, false);
+
+        private static string GetKey([CallerMemberName] string propertyName = "")
+        {
+            return nameof(MailNotifierSettings) + "." + propertyName;
+        }
+
         /// <summary>
         /// 通知先
         /// </summary>
-        public class Notifier : INotifierSettings
+        public class Notifier
         {
-            public static SerializablePropertyBase<string> MailAddress { get; } = new SerializableProperty<string>(GetKey(), Providers.Local, null);
-            public static SerializablePropertyBase<string> DisplayName { get; } = new SerializableProperty<string>(GetKey(), Providers.Local, "提督");
-
-            #region INotifierSettings members
             /// <summary>
             /// メールアドレス
             /// </summary>
-            string INotifierSettings.MailAddress => MailAddress.Value;
+            public static SerializablePropertyBase<string> MailAddress { get; } = new SerializableProperty<string>(GetKey(), Providers.Local, null);
 
             /// <summary>
             /// 表示名
             /// </summary>
-            string INotifierSettings.DisplayName => DisplayName.Value;
-            #endregion
+            public static SerializablePropertyBase<string> DisplayName { get; } = new SerializableProperty<string>(GetKey(), Providers.Local, "提督");
 
             private static string GetKey([CallerMemberName] string propertyName = "")
             {
@@ -38,22 +42,17 @@ namespace MailNotifierPlugin.Models.Settings
         /// <summary>
         /// 送信元
         /// </summary>
-        public class Sender : ISenderSettings
+        public class Sender
         {
-            public static SerializablePropertyBase<string> MailAddress { get; } = new SerializableProperty<string>(GetKey(), Providers.Local, null);
-            public static SerializablePropertyBase<string> DisplayName { get; } = new SerializableProperty<string>(GetKey(), Providers.Local, "艦これ");
-
-            #region ISenderSettings members
             /// <summary>
             /// メールアドレス
             /// </summary>
-            string ISenderSettings.MailAddress => MailAddress.Value;
+            public static SerializablePropertyBase<string> MailAddress { get; } = new SerializableProperty<string>(GetKey(), Providers.Local, null);
 
             /// <summary>
             /// 表示名
             /// </summary>
-            string ISenderSettings.DisplayName => DisplayName.Value;
-            #endregion
+            public static SerializablePropertyBase<string> DisplayName { get; } = new SerializableProperty<string>(GetKey(), Providers.Local, "艦これ");
 
             private static string GetKey([CallerMemberName] string propertyName = "")
             {
@@ -62,46 +61,38 @@ namespace MailNotifierPlugin.Models.Settings
         }
 
         /// <summary>
-        /// 送信メールサーバ
+        /// 送信サーバ
         /// </summary>
-        public class SendMailServer : ISendMailServerSettings
+        public class SendServer
         {
-            public static SerializablePropertyBase<string> Host { get; } = new SerializableProperty<string>(GetKey(), Providers.Local, null);
-            public static SerializablePropertyBase<int> Port { get; } = new SerializableProperty<int>(GetKey(), Providers.Local, 25);
-            public static SerializablePropertyBase<string> UserName { get; } = new SerializableProperty<string>(GetKey(), Providers.Local, null);
-            public static SerializablePropertyBase<string> Password { get; } = new SerializableProperty<string>(GetKey(), Providers.Local, null);
-            public static SerializablePropertyBase<bool> EnableSsl { get; } = new SerializableProperty<bool>(GetKey(), Providers.Local, false);
-
-            #region ISendMailServerSettings members
             /// <summary>
             /// ホスト名
             /// </summary>
-            string ISendMailServerSettings.Host => Host.Value;
+            public static SerializablePropertyBase<string> Host { get; } = new SerializableProperty<string>(GetKey(), Providers.Local, null);
 
             /// <summary>
             /// ポート
             /// </summary>
-            int ISendMailServerSettings.Port => Port.Value;
+            public static SerializablePropertyBase<int> Port { get; } = new SerializableProperty<int>(GetKey(), Providers.Local, 25);
 
             /// <summary>
             /// ユーザ名
             /// </summary>
-            string ISendMailServerSettings.UserName => UserName.Value;
+            public static SerializablePropertyBase<string> UserName { get; } = new SerializableProperty<string>(GetKey(), Providers.Local, null);
 
             /// <summary>
             /// パスワード
             /// </summary>
-            string ISendMailServerSettings.Password => Password.Value;
+            public static SerializablePropertyBase<string> Password { get; } = new SerializableProperty<string>(GetKey(), Providers.Local, null);
 
             /// <summary>
-            /// SSL使用フラグ
+            /// SSL有効状態
             /// </summary>
-            bool ISendMailServerSettings.EnableSsl => EnableSsl.Value;
-            #endregion
+            public static SerializablePropertyBase<bool> IsEnableSsl { get; } = new SerializableProperty<bool>(GetKey(), Providers.Local, false);
 
             private static string GetKey([CallerMemberName] string propertyName = "")
             {
-                return nameof(MailNotifierSettings) + "." + nameof(SendMailServer) + "." + propertyName;
+                return nameof(MailNotifierSettings) + "." + nameof(SendServer) + "." + propertyName;
             }
         }
     }

@@ -12,6 +12,22 @@ namespace MailNotifierPlugin.ViewModels
     /// </summary>
     public class ToolViewModel : ViewModel
     {
+        #region IsEnabled 変更通知プロパティ
+        private bool _IsEnabled;
+        public bool IsEnabled
+        {
+            get { return this._IsEnabled; }
+            set
+            {
+                if (this._IsEnabled != value)
+                {
+                    this._IsEnabled = value;
+                    this.RaisePropertyChanged();
+                }
+            }
+        }
+        #endregion
+
         #region NotifierMailAddress 変更通知プロパティ
         private string _NotifierMailAddress;
         public string NotifierMailAddress
@@ -142,7 +158,7 @@ namespace MailNotifierPlugin.ViewModels
 
         #region SendMailServerEnableSsl 変更通知プロパティ
         private bool _SendMailServerEnableSsl;
-        public bool SendMailServerEnableSsl
+        public bool SendMailServerIsEnableSsl
         {
             get { return this._SendMailServerEnableSsl; }
             set
@@ -169,15 +185,16 @@ namespace MailNotifierPlugin.ViewModels
         public void Initialize()
         {
             this.Cancel();
+            MailNotifierSettings.IsEnabled.Subscribe(x => this.IsEnabled = x).AddTo(this);
             MailNotifierSettings.Notifier.MailAddress.Subscribe(x => this.NotifierMailAddress = x).AddTo(this);
             MailNotifierSettings.Notifier.DisplayName.Subscribe(x => this.NotifierDisplayName = x).AddTo(this);
             MailNotifierSettings.Sender.MailAddress.Subscribe(x => this.SenderMailAddress = x).AddTo(this);
             MailNotifierSettings.Sender.DisplayName.Subscribe(x => this.SenderDisplayName = x).AddTo(this);
-            MailNotifierSettings.SendMailServer.Host.Subscribe(x => this.SendMailServerHost = x).AddTo(this);
-            MailNotifierSettings.SendMailServer.Port.Subscribe(x => this.SendMailServerPort = x).AddTo(this);
-            MailNotifierSettings.SendMailServer.UserName.Subscribe(x => this.SendMailServerUserName = x).AddTo(this);
-            MailNotifierSettings.SendMailServer.Password.Subscribe(x => this.SendMailServerPassword = x).AddTo(this);
-            MailNotifierSettings.SendMailServer.EnableSsl.Subscribe(x => this.SendMailServerEnableSsl = x).AddTo(this);
+            MailNotifierSettings.SendServer.Host.Subscribe(x => this.SendMailServerHost = x).AddTo(this);
+            MailNotifierSettings.SendServer.Port.Subscribe(x => this.SendMailServerPort = x).AddTo(this);
+            MailNotifierSettings.SendServer.UserName.Subscribe(x => this.SendMailServerUserName = x).AddTo(this);
+            MailNotifierSettings.SendServer.Password.Subscribe(x => this.SendMailServerPassword = x).AddTo(this);
+            MailNotifierSettings.SendServer.IsEnableSsl.Subscribe(x => this.SendMailServerIsEnableSsl = x).AddTo(this);
         }
 
         /// <summary>
@@ -185,17 +202,19 @@ namespace MailNotifierPlugin.ViewModels
         /// </summary>
         public void SendTest()
         {
-            MailSender ms = new MailSender();
+            MailSender ms = new MailSender()
+            {
+                Host = this.SendMailServerHost,
+                Port = this.SendMailServerPort,
+                UserName = this.SendMailServerUserName,
+                Password = this.SendMailServerPassword,
+                EnableSsl = this.SendMailServerIsEnableSsl
+            };
             ms.Send(
                 new MailAddress(this.SenderMailAddress, this.SenderDisplayName),
                 new MailAddress(this.NotifierMailAddress, this.NotifierDisplayName),
                 "テストメッセージ",
-                "このメールはメール通知設定のテスト中に、自動送信されたものです。",
-                this.SendMailServerHost,
-                this.SendMailServerPort,
-                this.SendMailServerUserName,
-                this.SendMailServerPassword,
-                this.SendMailServerEnableSsl
+                "このメールはメール通知設定のテスト中に、自動送信されたものです。"
             );
         }
 
@@ -204,15 +223,16 @@ namespace MailNotifierPlugin.ViewModels
         /// </summary>
         public void Apply()
         {
+            MailNotifierSettings.IsEnabled.Value = this.IsEnabled;
             MailNotifierSettings.Notifier.MailAddress.Value = this.NotifierMailAddress;
             MailNotifierSettings.Notifier.DisplayName.Value = this.NotifierDisplayName;
             MailNotifierSettings.Sender.MailAddress.Value = this.SenderMailAddress;
             MailNotifierSettings.Sender.DisplayName.Value = this.SenderDisplayName;
-            MailNotifierSettings.SendMailServer.Host.Value = this.SendMailServerHost;
-            MailNotifierSettings.SendMailServer.Port.Value = this.SendMailServerPort;
-            MailNotifierSettings.SendMailServer.UserName.Value = this.SendMailServerUserName;
-            MailNotifierSettings.SendMailServer.Password.Value = this.SendMailServerPassword;
-            MailNotifierSettings.SendMailServer.EnableSsl.Value = this.SendMailServerEnableSsl;
+            MailNotifierSettings.SendServer.Host.Value = this.SendMailServerHost;
+            MailNotifierSettings.SendServer.Port.Value = this.SendMailServerPort;
+            MailNotifierSettings.SendServer.UserName.Value = this.SendMailServerUserName;
+            MailNotifierSettings.SendServer.Password.Value = this.SendMailServerPassword;
+            MailNotifierSettings.SendServer.IsEnableSsl.Value = this.SendMailServerIsEnableSsl;
         }
 
         /// <summary>
@@ -220,15 +240,16 @@ namespace MailNotifierPlugin.ViewModels
         /// </summary>
         public void Cancel()
         {
+            this.IsEnabled = MailNotifierSettings.IsEnabled;
             this.NotifierMailAddress = MailNotifierSettings.Notifier.MailAddress;
             this.NotifierDisplayName = MailNotifierSettings.Notifier.DisplayName;
             this.SenderMailAddress = MailNotifierSettings.Sender.MailAddress;
             this.SenderDisplayName = MailNotifierSettings.Sender.DisplayName;
-            this.SendMailServerHost = MailNotifierSettings.SendMailServer.Host;
-            this.SendMailServerPort = MailNotifierSettings.SendMailServer.Port;
-            this.SendMailServerUserName = MailNotifierSettings.SendMailServer.UserName;
-            this.SendMailServerPassword = MailNotifierSettings.SendMailServer.Password;
-            this.SendMailServerEnableSsl = MailNotifierSettings.SendMailServer.EnableSsl;
+            this.SendMailServerHost = MailNotifierSettings.SendServer.Host;
+            this.SendMailServerPort = MailNotifierSettings.SendServer.Port;
+            this.SendMailServerUserName = MailNotifierSettings.SendServer.UserName;
+            this.SendMailServerPassword = MailNotifierSettings.SendServer.Password;
+            this.SendMailServerIsEnableSsl = MailNotifierSettings.SendServer.IsEnableSsl;
         }
     }
 }

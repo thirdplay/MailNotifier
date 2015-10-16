@@ -75,7 +75,20 @@ namespace MailNotifierPlugin
         /// <param name="notification">ユーザへの通知を示すメンバー</param>
         public void Notify(INotification notification)
         {
-            this.mailSender.Send(notification);
+            if (MailNotifierSettings.IsEnabled)
+            {
+                this.mailSender.Host = MailNotifierSettings.SendServer.Host;
+                this.mailSender.Port = MailNotifierSettings.SendServer.Port;
+                this.mailSender.UserName = MailNotifierSettings.SendServer.UserName;
+                this.mailSender.Password = MailNotifierSettings.SendServer.Password;
+                this.mailSender.EnableSsl = MailNotifierSettings.SendServer.IsEnableSsl;
+                this.mailSender.Send(
+                    new MailAddress(MailNotifierSettings.Sender.MailAddress, MailNotifierSettings.Sender.DisplayName),
+                    new MailAddress(MailNotifierSettings.Notifier.MailAddress, MailNotifierSettings.Notifier.DisplayName),
+                    notification.Header,
+                    MailSender.GetMailBody(notification.Body)
+                );
+            }
         }
     }
 }

@@ -133,9 +133,6 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\Interface\ISenderSettings.cs" />
-    <Compile Include="Models\Interface\ISendMailServerSettings.cs" />
-    <Compile Include="Models\Interface\INotifierSettings.cs" />
     <Compile Include="Models\MailSender.cs" />
     <Compile Include="Models\Settings\MailNotifierSettings.cs" />
     <Compile Include="Models\Settings\Providers.cs" />

@@ -3,6 +3,7 @@ using Grabacr07.KanColleWrapper;
 using Grabacr07.KanColleWrapper.Models;
 using MailNotifierPlugin.Models.Settings;
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Mail;
 using System.Windows;
@@ -14,40 +15,42 @@ namespace MailNotifierPlugin.Models
     /// </summary>
     public class MailSender
     {
+        #region プロパティ
         /// <summary>
-        /// メール送信
+        /// 送信メールサーバのホスト
         /// </summary>
-        /// <param name="notification">通知情報</param>
-        /// <returns>true:成功,false:失敗</returns>
-        public bool Send(INotification notification)
-        {
-            return Send(
-                new MailAddress(MailNotifierSettings.Sender.MailAddress, MailNotifierSettings.Sender.DisplayName),
-                new MailAddress(MailNotifierSettings.Notifier.MailAddress.Value, MailNotifierSettings.Notifier.DisplayName),
-                notification.Header,
-                getMailBody(notification.Body),
-                MailNotifierSettings.SendMailServer.Host,
-                MailNotifierSettings.SendMailServer.Port,
-                MailNotifierSettings.SendMailServer.UserName,
-                MailNotifierSettings.SendMailServer.Password,
-                MailNotifierSettings.SendMailServer.EnableSsl
-            );
-        }
+        public string Host { get; set; }
+
+        /// <summary>
+        /// 送信メールサーバのポート
+        /// </summary>
+        public int Port { get; set; }
+
+        /// <summary>
+        /// ユーザ名
+        /// </summary>
+        public string UserName { get; set; }
+
+        /// <summary>
+        /// パスワード
+        /// </summary>
+        public string Password { get; set; }
+
+        /// <summary>
+        /// SSL使用フラグ
+        /// </summary>
+        public bool EnableSsl { get; set; }
+        #endregion
 
         /// <summary>
         /// メール送信
         /// </summary>
-        /// <param name="from">送信元</param>
-        /// <param name="to">送信先</param>
+        /// <param name="from">差出人メールアドレス</param>
+        /// <param name="to">受信者メールアドレス</param>
         /// <param name="subject">件名</param>
         /// <param name="body">本文</param>
-        /// <param name="host">送信メールサーバのポスト</param>
-        /// <param name="port">送信メールサーバのポート</param>
-        /// <param name="userName">ユーザ名</param>
-        /// <param name="password">パスワード</param>
-        /// <param name="enableSsl">SSL使用フラグ</param>
         /// <returns>true:成功,false:失敗</returns>
-        public bool Send(MailAddress from, MailAddress to, string subject, string body, string host, int port, string userName, string password, bool enableSsl)
+        public bool Send(MailAddress from, MailAddress to, string subject, string body)
         {
             try
             {
@@ -62,13 +65,13 @@ namespace MailNotifierPlugin.Models
                     // SMTPサーバー設定
                     using (SmtpClient sc = new SmtpClient())
                     {
-                        sc.Host = host;
-                        sc.Port = port;
+                        sc.Host = this.Host;
+                        sc.Port = this.Port;
                         sc.DeliveryMethod = SmtpDeliveryMethod.Network;
-                        sc.EnableSsl = enableSsl;
-                        if (!String.IsNullOrEmpty(userName))
+                        sc.EnableSsl = this.EnableSsl;
+                        if (!String.IsNullOrEmpty(this.UserName))
                         {
-                            sc.Credentials = new NetworkCredential(userName, password);
+                            sc.Credentials = new NetworkCredential(this.UserName, this.Password);
                         }
 
                         // メッセージを送信する
@@ -92,7 +95,7 @@ namespace MailNotifierPlugin.Models
         /// </remarks>
         /// <param name="body">メール本文</param>
         /// <returns>メール本文</returns>
-        private String getMailBody(String body)
+        public static String GetMailBody(String body)
         {
             // 本文に遠征状況を追加
             body += Environment.NewLine;
