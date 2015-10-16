@@ -1,8 +1,8 @@
 # MailNotifierPlugin
-通知メールを送信するKanColleViewer用プラグインです。
+通知内容をメールで送信するKanColleViewer用プラグインです。
 
 ### 機能
-* 通知メールの送信
+* 通知内容のメール送信
 
 ### インストール
 
