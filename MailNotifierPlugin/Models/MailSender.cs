@@ -1,0 +1,129 @@
+﻿using Grabacr07.KanColleViewer.Composition;
+using Grabacr07.KanColleWrapper;
+using Grabacr07.KanColleWrapper.Models;
+using MailNotifierPlugin.Models.Settings;
+using System;
+using System.Net;
+using System.Net.Mail;
+using System.Windows;
+
+namespace MailNotifierPlugin.Models
+{
+    /// <summary>
+    /// メール送信モデル
+    /// </summary>
+    public class MailSender
+    {
+        /// <summary>
+        /// メール送信
+        /// </summary>
+        /// <param name="notification">通知情報</param>
+        /// <returns>true:成功,false:失敗</returns>
+        public bool Send(INotification notification)
+        {
+            return Send(
+                new MailAddress(MailNotifierSettings.Sender.MailAddress, MailNotifierSettings.Sender.DisplayName),
+                new MailAddress(MailNotifierSettings.Notifier.MailAddress.Value, MailNotifierSettings.Notifier.DisplayName),
+                notification.Header,
+                getMailBody(notification.Body),
+                MailNotifierSettings.SendMailServer.Host,
+                MailNotifierSettings.SendMailServer.Port,
+                MailNotifierSettings.SendMailServer.UserName,
+                MailNotifierSettings.SendMailServer.Password,
+                MailNotifierSettings.SendMailServer.EnableSsl
+            );
+        }
+
+        /// <summary>
+        /// メール送信
+        /// </summary>
+        /// <param name="from">送信元</param>
+        /// <param name="to">送信先</param>
+        /// <param name="subject">件名</param>
+        /// <param name="body">本文</param>
+        /// <param name="host">送信メールサーバのポスト</param>
+        /// <param name="port">送信メールサーバのポート</param>
+        /// <param name="userName">ユーザ名</param>
+        /// <param name="password">パスワード</param>
+        /// <param name="enableSsl">SSL使用フラグ</param>
+        /// <returns>true:成功,false:失敗</returns>
+        public bool Send(MailAddress from, MailAddress to, string subject, string body, string host, int port, string userName, string password, bool enableSsl)
+        {
+            try
+            {
+                using (MailMessage msg = new MailMessage())
+                {
+                    // メールメッセージ作成
+                    msg.From = from;
+                    msg.To.Add(to);
+                    msg.Subject = subject;
+                    msg.Body = body;
+
+                    // SMTPサーバー設定
+                    using (SmtpClient sc = new SmtpClient())
+                    {
+                        sc.Host = host;
+                        sc.Port = port;
+                        sc.DeliveryMethod = SmtpDeliveryMethod.Network;
+                        sc.EnableSsl = enableSsl;
+                        if (!String.IsNullOrEmpty(userName))
+                        {
+                            sc.Credentials = new NetworkCredential(userName, password);
+                        }
+
+                        // メッセージを送信する
+                        sc.Send(msg);
+                    }
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// メール本文取得
+        /// </summary>
+        /// <remarks>
+        /// 現在の遠征状況を追記したメール本文を取得する。
+        /// </remarks>
+        /// <param name="body">メール本文</param>
+        /// <returns>メール本文</returns>
+        private String getMailBody(String body)
+        {
+            // 本文に遠征状況を追加
+            body += Environment.NewLine;
+            body += "------------------------------------" + Environment.NewLine;
+
+            // 艦これが起動中の場合
+            if (KanColleClient.Current != null && KanColleClient.Current.IsStarted)
+            {
+                foreach (Fleet fleet in KanColleClient.Current.Homeport.Organization.Fleets.Values)
+                {
+                    // 第一艦隊は対象外
+                    if (fleet.Id == 1)
+                    {
+                        continue;
+                    }
+
+                    // 遠征情報の取得
+                    Expedition expedition = fleet.Expedition;
+
+                    // 遠征中の場合、残り時間を取得する
+                    String remaining = "";
+                    if (expedition.IsInExecution)
+                    {
+                        remaining = expedition.Remaining.Value.ToString(@"hh\:mm\:ss");
+                    }
+
+                    // 本文に遠征状況を追加
+                    body += String.Format("/{0} - {1}", fleet.Id, remaining) + Environment.NewLine;
+                }
+            }
+            return body;
+        }
+    }
+}
