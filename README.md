@@ -14,7 +14,7 @@
 
 ### ダウンロード
 
-(https://github.com/thirdplay/MaterialChartPlugin/releases/latest) [MaterialChartPlugin - GitHub Releases Page](https://github.com/thirdplay/MailNotifierPlugin/releases/latest)
+https://github.com/thirdplay/MailNotifierPlugin/releases/latest
 
 ### 使用ライブラリ
 
