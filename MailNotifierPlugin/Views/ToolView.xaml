@@ -1,15 +1,15 @@
 ﻿<UserControl x:Class="MailNotifierPlugin.Views.ToolView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:metro="http://schemes.grabacr.net/winfx/2014/controls"
-			 xmlns:metro2="http://schemes.grabacr.net/winfx/2015/personal/controls"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-			 xmlns:vms="clr-namespace:MailNotifierPlugin.ViewModels"
+             xmlns:metro="http://schemes.grabacr.net/winfx/2014/controls"
+			 xmlns:metro2="http://schemes.grabacr.net/winfx/2015/personal/controls"
+			 xmlns:prop="clr-namespace:MailNotifierPlugin.Properties"
              mc:Ignorable="d" 
              d:DesignWidth="500"
              d:DesignHeight="400"
-             d:DataContext="{d:DesignInstance vms:ToolViewModel}">
+             d:DataContext="{d:DesignData /SampleData/ToolViewModelSampleData.xaml}">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -21,11 +21,13 @@
                   Background="{DynamicResource ThemeBrushKey}"
                   Foreground="{DynamicResource ActiveForegroundBrushKey}">
         <StackPanel Margin="8,4">
-            <CheckBox Content="通知をメールで送信する" IsChecked="{Binding IsEnabled, Mode=TwoWay}" Margin="0,2,0,10" />
+            <CheckBox Margin="0,2,0,10"
+                      Content="{x:Static prop:Resources.Settings_IsEnabled}"
+                      IsChecked="{Binding IsEnabled, Mode=TwoWay}" />
             <Rectangle Height="1"
                        Style="{DynamicResource SeparatorRectangleStyleKey}" />
             <StackPanel IsEnabled="{Binding IsEnabled}">
-                <TextBlock Text="通知先"
+                <TextBlock Text="{x:Static prop:Resources.Settings_Notifier}"
                        Style="{DynamicResource SettingsHeaderTextStyleKey}"
                        Margin="0,10,0,8" />
                 <StackPanel Margin="20,-5,0,10">
@@ -40,19 +42,26 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock Text="メールアドレス：" HorizontalAlignment="Right" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" />
-                        <metro:PromptTextBox Grid.Row="0" Grid.Column="1" Prompt="メールアドレス" Margin="0,2"
-                                         Text="{Binding NotifierMailAddress, Mode=TwoWay}" />
-                        <TextBlock Text="表示名：" HorizontalAlignment="Right" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" />
-                        <metro:PromptTextBox Grid.Row="1" Grid.Column="1" Prompt="表示名" Margin="0,2"
-                                         Text="{Binding NotifierDisplayName, Mode=TwoWay}" />
+                        <TextBlock HorizontalAlignment="Right" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center">
+                            <Run Text="{x:Static prop:Resources.Settings_MailAddress}" />
+                            <Run Text=": " />
+                        </TextBlock>
+                        <metro:PromptTextBox Grid.Row="0" Grid.Column="1" Margin="0,2"
+                                             Prompt="{x:Static prop:Resources.Settings_MailAddress}"
+                                             Text="{Binding NotifierMailAddress, Mode=TwoWay}" />
+                        <TextBlock HorizontalAlignment="Right" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center">
+                            <Run Text="{x:Static prop:Resources.Settings_DisplayName}" />
+                            <Run Text=": " />
+                        </TextBlock>
+                        <metro:PromptTextBox Grid.Row="1" Grid.Column="1" Margin="0,2"
+                                             Prompt="{x:Static prop:Resources.Settings_DisplayName}"
+                                             Text="{Binding NotifierDisplayName, Mode=TwoWay}" />
                     </Grid>
                 </StackPanel>
-                <Rectangle Height="1"
-                       Style="{DynamicResource SeparatorRectangleStyleKey}" />
-                <TextBlock Text="送信元"
-                       Style="{DynamicResource SettingsHeaderTextStyleKey}"
-                       Margin="0,10,0,8" />
+                <Rectangle Height="1" Style="{DynamicResource SeparatorRectangleStyleKey}" />
+                <TextBlock Text="{x:Static prop:Resources.Settings_Sender}"
+                           Style="{DynamicResource SettingsHeaderTextStyleKey}"
+                           Margin="0,10,0,8" />
                 <StackPanel Margin="20,-5,0,10">
                     <Grid>
                         <Grid.RowDefinitions>
@@ -65,22 +74,33 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock Text="メールアドレス：" HorizontalAlignment="Right" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" />
-                        <metro:PromptTextBox Grid.Row="0" Grid.Column="1" Prompt="メールアドレス" Margin="0,2"
-                                         Text="{Binding SenderMailAddress, Mode=TwoWay}" />
-                        <TextBlock Text="表示名：" HorizontalAlignment="Right" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" />
-                        <metro:PromptTextBox Grid.Row="1" Grid.Column="1" Prompt="表示名" Margin="0,2"
-                                         Text="{Binding SenderDisplayName, Mode=TwoWay}" />
+                        <TextBlock HorizontalAlignment="Right" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center">
+                            <Run Text="{x:Static prop:Resources.Settings_MailAddress}" />
+                            <Run Text=": " />
+                        </TextBlock>
+                        <metro:PromptTextBox Grid.Row="0" Grid.Column="1" Margin="0,2"
+                                             Prompt="{x:Static prop:Resources.Settings_MailAddress}"
+                                             Text="{Binding SenderMailAddress, Mode=TwoWay}" />
+                        <TextBlock HorizontalAlignment="Right" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center">
+                            <Run Text="{x:Static prop:Resources.Settings_DisplayName}" />
+                            <Run Text=": " />
+                        </TextBlock>
+                        <metro:PromptTextBox Grid.Row="1" Grid.Column="1" Margin="0,2"
+                                             Prompt="{x:Static prop:Resources.Settings_DisplayName}"
+                                             Text="{Binding SenderDisplayName, Mode=TwoWay}" />
                     </Grid>
                 </StackPanel>
-                <Rectangle Height="1"
-                       Style="{DynamicResource SeparatorRectangleStyleKey}" />
-                <TextBlock Text="送信メールサーバ"
-                       Style="{DynamicResource SettingsHeaderTextStyleKey}"
-                       Margin="0,10,0,8" />
+                <Rectangle Height="1" Style="{DynamicResource SeparatorRectangleStyleKey}" />
+                <TextBlock Margin="0,10,0,8"
+                           Text="{x:Static prop:Resources.Settings_SendServer}"
+                           Style="{DynamicResource SettingsHeaderTextStyleKey}" />
                 <StackPanel Margin="20,-5,0,6">
                     <Grid Margin="0,4">
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
@@ -92,48 +112,57 @@
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
-                        <TextBlock Text="ホスト名：" HorizontalAlignment="Right" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" />
-                        <metro:PromptTextBox Grid.Row="0" Grid.Column="1" Prompt="ホスト名" Text="{Binding SendMailServerHost, Mode=TwoWay}" Margin="0,2" />
-                        <TextBlock Text="ポート：" Grid.Row="0" Grid.Column="3" VerticalAlignment="Center" />
-                        <metro:PromptTextBox Grid.Row="0" Grid.Column="4" Height="24" Prompt="ポート" Width="80" Text="{Binding SendMailServerPort, Mode=TwoWay}" Margin="0,2" />
-                        <Expander Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" Header="認証">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="76" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Text="ユーザ名：" HorizontalAlignment="Right" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" />
-                                <metro:PromptTextBox Grid.Row="0" Grid.Column="1" Prompt="ユーザ名" Text="{Binding SendMailServerUserName, Mode=TwoWay}" Margin="0,2" />
-                                <TextBlock Text="パスワード：" HorizontalAlignment="Right" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" />
-                                <metro:PromptTextBox Grid.Row="1" Grid.Column="1" Prompt="パスワード" Text="{Binding SendMailServerPassword, Mode=TwoWay}" Margin="0,2" />
-                                <CheckBox Grid.Row="2" Grid.Column="1" Content="SSL/TLSを使用する" IsChecked="{Binding SendMailServerEnableSsl}" Margin="0,2" />
-                            </Grid>
-                        </Expander>
+                        <TextBlock HorizontalAlignment="Right" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center">
+                            <Run Text="{x:Static prop:Resources.Settings_Host}" />
+                            <Run Text=": " />
+                        </TextBlock>
+                        <metro:PromptTextBox Grid.Row="0" Grid.Column="1" Margin="0,2"
+                                             Prompt="{x:Static prop:Resources.Settings_Host}"
+                                             Text="{Binding SendServerHost, Mode=TwoWay}" />
+                        <TextBlock Grid.Row="0" Grid.Column="3" VerticalAlignment="Center">
+                            <Run Text="{x:Static prop:Resources.Settings_Port}" />
+                            <Run Text=": " />
+                        </TextBlock>
+                        <metro:PromptTextBox Grid.Row="0" Grid.Column="4" Height="24" Width="80" Margin="0,2"
+                                             Prompt="{x:Static prop:Resources.Settings_Port}"
+                                             Text="{Binding SendServerPort, Mode=TwoWay}" />
+                        <Border Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="5" Height="1"
+                                Background="{DynamicResource ActiveBorderBrushKey}"
+                                Margin="0,5" />
+                        <TextBlock HorizontalAlignment="Right" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center">
+                            <Run Text="{x:Static prop:Resources.Settings_UserName}" />
+                            <Run Text=": " />
+                        </TextBlock>
+                        <metro:PromptTextBox Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="4" Margin="0,2"
+                                                Prompt="{x:Static prop:Resources.Settings_UserName}"
+                                                Text="{Binding SendServerUserName, Mode=TwoWay}" />
+                        <TextBlock HorizontalAlignment="Right" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center">
+                            <Run Text="{x:Static prop:Resources.Settings_Password}" />
+                            <Run Text=": " />
+                        </TextBlock>
+                        <metro:PromptTextBox Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="4" Margin="0,2"
+                                                Prompt="{x:Static prop:Resources.Settings_Password}"
+                                                Text="{Binding SendServerPassword, Mode=TwoWay}" />
+                        <CheckBox Grid.Row="5" Grid.Column="1"  Margin="0,2"
+                                    Content="{x:Static prop:Resources.Settings_IsEnabledSsl}"
+                                    IsChecked="{Binding SendServerIsEnableSsl}" />
                     </Grid>
                 </StackPanel>
             </StackPanel>
-            <Rectangle Height="1"
-                       Style="{DynamicResource SeparatorRectangleStyleKey}" />
-            <StackPanel Orientation="Horizontal"
-					HorizontalAlignment="Right"
-					Margin="0,8,0,4">
-                <metro2:CallMethodButton Content="テスト送信"
+            <Rectangle Height="1" Style="{DynamicResource SeparatorRectangleStyleKey}" />
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,8,0,4">
+                <metro2:CallMethodButton Content="{x:Static prop:Resources.Settings_SendTest}"
                                          MethodTarget="{Binding}"
                                          MethodName="SendTest"
                                          MinWidth="90"
                                          Margin="4,2"
                                          IsEnabled="{Binding IsEnabled}"/>
-                <metro2:CallMethodButton Content="適用"
+                <metro2:CallMethodButton Content="{x:Static prop:Resources.Settings_Apply}"
                                          MethodTarget="{Binding}"
                                          MethodName="Apply"
                                          MinWidth="90"
                                          Margin="4,2" />
-                <metro2:CallMethodButton Content="キャンセル"
+                <metro2:CallMethodButton Content="{x:Static prop:Resources.Settings_Cancel}"
                                          MethodTarget="{Binding}"
                                          MethodName="Cancel"
                                          MinWidth="90"

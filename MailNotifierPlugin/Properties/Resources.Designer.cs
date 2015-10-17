@@ -4,24 +4,25 @@
 //     ランタイム バージョン:4.0.30319.42000
 //
 //     このファイルへの変更は、以下の状況下で不正な動作の原因になったり、
-//     コードが再生成されるときに損失したりします
+//     コードが再生成されるときに損失したりします。
 // </auto-generated>
 //------------------------------------------------------------------------------
 
 namespace MailNotifierPlugin.Properties {
+    using System;
     
     
     /// <summary>
     ///   ローカライズされた文字列などを検索するための、厳密に型指定されたリソース クラスです。
     /// </summary>
-    // このクラスは StronglyTypedResourceBuilder クラスによって ResGen
+    // このクラスは StronglyTypedResourceBuilder クラスが ResGen
     // または Visual Studio のようなツールを使用して自動生成されました。
     // メンバーを追加または削除するには、.ResX ファイルを編集して、/str オプションと共に
-    // ResGen を実行し直すか、または VS プロジェクトをリビルドします。
+    // ResGen を実行し直すか、または VS プロジェクトをビルドし直します。
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -32,12 +33,12 @@ namespace MailNotifierPlugin.Properties {
         }
         
         /// <summary>
-        ///   このクラスで使用されるキャッシュされた ResourceManager インスタンスを返します。
+        ///   このクラスで使用されているキャッシュされた ResourceManager インスタンスを返します。
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
-                if ((resourceMan == null)) {
+                if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("MailNotifierPlugin.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
@@ -50,12 +51,165 @@ namespace MailNotifierPlugin.Properties {
         ///   現在のスレッドの CurrentUICulture プロパティをオーバーライドします。
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   このメールはメール通知設定のテスト中に、自動送信されたものです。 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SendTest_Body {
+            get {
+                return ResourceManager.GetString("SendTest_Body", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   テストメッセージ に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string SendTest_Subject {
+            get {
+                return ResourceManager.GetString("SendTest_Subject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   適用 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Apply {
+            get {
+                return ResourceManager.GetString("Settings_Apply", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   認証 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Auth {
+            get {
+                return ResourceManager.GetString("Settings_Auth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   キャンセル に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Cancel {
+            get {
+                return ResourceManager.GetString("Settings_Cancel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   表示名 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_DisplayName {
+            get {
+                return ResourceManager.GetString("Settings_DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   ホスト名 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Host {
+            get {
+                return ResourceManager.GetString("Settings_Host", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   通知をメールで送信する に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_IsEnabled {
+            get {
+                return ResourceManager.GetString("Settings_IsEnabled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   SSLを使用する に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_IsEnabledSsl {
+            get {
+                return ResourceManager.GetString("Settings_IsEnabledSsl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   メールアドレス に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_MailAddress {
+            get {
+                return ResourceManager.GetString("Settings_MailAddress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   通知先 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Notifier {
+            get {
+                return ResourceManager.GetString("Settings_Notifier", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   パスワード に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Password {
+            get {
+                return ResourceManager.GetString("Settings_Password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   ポート に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Port {
+            get {
+                return ResourceManager.GetString("Settings_Port", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   送信元 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_Sender {
+            get {
+                return ResourceManager.GetString("Settings_Sender", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   送信サーバ に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_SendServer {
+            get {
+                return ResourceManager.GetString("Settings_SendServer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   テスト送信 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_SendTest {
+            get {
+                return ResourceManager.GetString("Settings_SendTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   ユーザ名 に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Settings_UserName {
+            get {
+                return ResourceManager.GetString("Settings_UserName", resourceCulture);
             }
         }
     }

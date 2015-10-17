@@ -1,6 +1,7 @@
 ﻿using Livet;
 using MailNotifierPlugin.Models;
 using MailNotifierPlugin.Models.Settings;
+using MailNotifierPlugin.Properties;
 using MetroTrilithon.Lifetime;
 using MetroTrilithon.Mvvm;
 using System.Net.Mail;
@@ -92,80 +93,80 @@ namespace MailNotifierPlugin.ViewModels
         }
         #endregion
 
-        #region SendMailServerHost 変更通知プロパティ
-        private string _SendMailServerHost;
-        public string SendMailServerHost
+        #region SendServerHost 変更通知プロパティ
+        private string _SendServerHost;
+        public string SendServerHost
         {
-            get { return this._SendMailServerHost; }
+            get { return this._SendServerHost; }
             set
             {
-                if (this._SendMailServerHost != value)
+                if (this._SendServerHost != value)
                 {
-                    this._SendMailServerHost = value;
+                    this._SendServerHost = value;
                     this.RaisePropertyChanged();
                 }
             }
         }
         #endregion
 
-        #region SendMailServerPort 変更通知プロパティ
-        private int _SendMailServerPort;
-        public int SendMailServerPort
+        #region SendServerPort 変更通知プロパティ
+        private int _SendServerPort;
+        public int SendServerPort
         {
-            get { return this._SendMailServerPort; }
+            get { return this._SendServerPort; }
             set
             {
-                if (this._SendMailServerPort != value)
+                if (this._SendServerPort != value)
                 {
-                    this._SendMailServerPort = value;
+                    this._SendServerPort = value;
                     this.RaisePropertyChanged();
                 }
             }
         }
         #endregion
 
-        #region SendMailServerUserName 変更通知プロパティ
-        private string _SendMailServerUserName;
-        public string SendMailServerUserName
+        #region SendServerUserName 変更通知プロパティ
+        private string _SendServerUserName;
+        public string SendServerUserName
         {
-            get { return this._SendMailServerUserName; }
+            get { return this._SendServerUserName; }
             set
             {
-                if (this._SendMailServerUserName != value)
+                if (this._SendServerUserName != value)
                 {
-                    this._SendMailServerUserName = value;
+                    this._SendServerUserName = value;
                     this.RaisePropertyChanged();
                 }
             }
         }
         #endregion
 
-        #region SendMailServerPassword 変更通知プロパティ
-        private string _SendMailServerPassword;
-        public string SendMailServerPassword
+        #region SendServerPassword 変更通知プロパティ
+        private string _SendServerPassword;
+        public string SendServerPassword
         {
-            get { return this._SendMailServerPassword; }
+            get { return this._SendServerPassword; }
             set
             {
-                if (this._SendMailServerPassword != value)
+                if (this._SendServerPassword != value)
                 {
-                    this._SendMailServerPassword = value;
+                    this._SendServerPassword = value;
                     this.RaisePropertyChanged();
                 }
             }
         }
         #endregion
 
-        #region SendMailServerEnableSsl 変更通知プロパティ
-        private bool _SendMailServerEnableSsl;
-        public bool SendMailServerIsEnableSsl
+        #region SendServerIsEnableSsl 変更通知プロパティ
+        private bool _SendServerIsEnableSsl;
+        public bool SendServerIsEnableSsl
         {
-            get { return this._SendMailServerEnableSsl; }
+            get { return this._SendServerIsEnableSsl; }
             set
             {
-                if (this._SendMailServerEnableSsl != value)
+                if (this._SendServerIsEnableSsl != value)
                 {
-                    this._SendMailServerEnableSsl = value;
+                    this._SendServerIsEnableSsl = value;
                     this.RaisePropertyChanged();
                 }
             }
@@ -190,11 +191,11 @@ namespace MailNotifierPlugin.ViewModels
             MailNotifierSettings.Notifier.DisplayName.Subscribe(x => this.NotifierDisplayName = x).AddTo(this);
             MailNotifierSettings.Sender.MailAddress.Subscribe(x => this.SenderMailAddress = x).AddTo(this);
             MailNotifierSettings.Sender.DisplayName.Subscribe(x => this.SenderDisplayName = x).AddTo(this);
-            MailNotifierSettings.SendServer.Host.Subscribe(x => this.SendMailServerHost = x).AddTo(this);
-            MailNotifierSettings.SendServer.Port.Subscribe(x => this.SendMailServerPort = x).AddTo(this);
-            MailNotifierSettings.SendServer.UserName.Subscribe(x => this.SendMailServerUserName = x).AddTo(this);
-            MailNotifierSettings.SendServer.Password.Subscribe(x => this.SendMailServerPassword = x).AddTo(this);
-            MailNotifierSettings.SendServer.IsEnableSsl.Subscribe(x => this.SendMailServerIsEnableSsl = x).AddTo(this);
+            MailNotifierSettings.SendServer.Host.Subscribe(x => this.SendServerHost = x).AddTo(this);
+            MailNotifierSettings.SendServer.Port.Subscribe(x => this.SendServerPort = x).AddTo(this);
+            MailNotifierSettings.SendServer.UserName.Subscribe(x => this.SendServerUserName = x).AddTo(this);
+            MailNotifierSettings.SendServer.Password.Subscribe(x => this.SendServerPassword = x).AddTo(this);
+            MailNotifierSettings.SendServer.IsEnableSsl.Subscribe(x => this.SendServerIsEnableSsl = x).AddTo(this);
         }
 
         /// <summary>
@@ -204,17 +205,17 @@ namespace MailNotifierPlugin.ViewModels
         {
             MailSender ms = new MailSender()
             {
-                Host = this.SendMailServerHost,
-                Port = this.SendMailServerPort,
-                UserName = this.SendMailServerUserName,
-                Password = this.SendMailServerPassword,
-                EnableSsl = this.SendMailServerIsEnableSsl
+                Host = this.SendServerHost,
+                Port = this.SendServerPort,
+                UserName = this.SendServerUserName,
+                Password = this.SendServerPassword,
+                EnableSsl = this.SendServerIsEnableSsl
             };
             ms.Send(
                 new MailAddress(this.SenderMailAddress, this.SenderDisplayName),
                 new MailAddress(this.NotifierMailAddress, this.NotifierDisplayName),
-                "テストメッセージ",
-                "このメールはメール通知設定のテスト中に、自動送信されたものです。"
+                Resources.SendTest_Subject,
+                Resources.SendTest_Body
             );
         }
 
@@ -228,11 +229,11 @@ namespace MailNotifierPlugin.ViewModels
             MailNotifierSettings.Notifier.DisplayName.Value = this.NotifierDisplayName;
             MailNotifierSettings.Sender.MailAddress.Value = this.SenderMailAddress;
             MailNotifierSettings.Sender.DisplayName.Value = this.SenderDisplayName;
-            MailNotifierSettings.SendServer.Host.Value = this.SendMailServerHost;
-            MailNotifierSettings.SendServer.Port.Value = this.SendMailServerPort;
-            MailNotifierSettings.SendServer.UserName.Value = this.SendMailServerUserName;
-            MailNotifierSettings.SendServer.Password.Value = this.SendMailServerPassword;
-            MailNotifierSettings.SendServer.IsEnableSsl.Value = this.SendMailServerIsEnableSsl;
+            MailNotifierSettings.SendServer.Host.Value = this.SendServerHost;
+            MailNotifierSettings.SendServer.Port.Value = this.SendServerPort;
+            MailNotifierSettings.SendServer.UserName.Value = this.SendServerUserName;
+            MailNotifierSettings.SendServer.Password.Value = this.SendServerPassword;
+            MailNotifierSettings.SendServer.IsEnableSsl.Value = this.SendServerIsEnableSsl;
         }
 
         /// <summary>
@@ -245,11 +246,11 @@ namespace MailNotifierPlugin.ViewModels
             this.NotifierDisplayName = MailNotifierSettings.Notifier.DisplayName;
             this.SenderMailAddress = MailNotifierSettings.Sender.MailAddress;
             this.SenderDisplayName = MailNotifierSettings.Sender.DisplayName;
-            this.SendMailServerHost = MailNotifierSettings.SendServer.Host;
-            this.SendMailServerPort = MailNotifierSettings.SendServer.Port;
-            this.SendMailServerUserName = MailNotifierSettings.SendServer.UserName;
-            this.SendMailServerPassword = MailNotifierSettings.SendServer.Password;
-            this.SendMailServerIsEnableSsl = MailNotifierSettings.SendServer.IsEnableSsl;
+            this.SendServerHost = MailNotifierSettings.SendServer.Host;
+            this.SendServerPort = MailNotifierSettings.SendServer.Port;
+            this.SendServerUserName = MailNotifierSettings.SendServer.UserName;
+            this.SendServerPassword = MailNotifierSettings.SendServer.Password;
+            this.SendServerIsEnableSsl = MailNotifierSettings.SendServer.IsEnableSsl;
         }
     }
 }
