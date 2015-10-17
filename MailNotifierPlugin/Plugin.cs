@@ -83,8 +83,10 @@ namespace MailNotifierPlugin
                 this.mailSender.Password = MailNotifierSettings.SendServer.Password;
                 this.mailSender.EnableSsl = MailNotifierSettings.SendServer.IsEnableSsl;
                 this.mailSender.Send(
-                    new MailAddress(MailNotifierSettings.Sender.MailAddress, MailNotifierSettings.Sender.DisplayName),
-                    new MailAddress(MailNotifierSettings.Notifier.MailAddress, MailNotifierSettings.Notifier.DisplayName),
+                    MailNotifierSettings.Sender.MailAddress,
+                    MailNotifierSettings.Sender.DisplayName,
+                    MailNotifierSettings.Notifier.MailAddress,
+                    MailNotifierSettings.Notifier.DisplayName,
                     notification.Header,
                     MailSender.GetMailBody(notification.Body)
                 );

@@ -212,8 +212,10 @@ namespace MailNotifierPlugin.ViewModels
                 EnableSsl = this.SendServerIsEnableSsl
             };
             ms.Send(
-                new MailAddress(this.SenderMailAddress, this.SenderDisplayName),
-                new MailAddress(this.NotifierMailAddress, this.NotifierDisplayName),
+                this.SenderMailAddress,
+                this.SenderDisplayName,
+                this.NotifierMailAddress,
+                this.NotifierDisplayName,
                 Resources.SendTest_Subject,
                 Resources.SendTest_Body
             );
