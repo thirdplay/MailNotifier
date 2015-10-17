@@ -1,0 +1,14 @@
+﻿<viewModels:ToolViewModel xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                          xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                          xmlns:viewModels="clr-namespace:MailNotifierPlugin.ViewModels"
+                          IsEnabled="True"
+                          NotifierMailAddress="xxxx@xxx.xx.xx"
+                          NotifierDisplayName="艦これ"
+                          SenderMailAddress="yyyy@yyy.yy.yy"
+                          SenderDisplayName="提督"
+                          SendServerHost="smtp.xxxx.xx.xx"
+                          SendServerPort="80"
+                          SendServerUserName="xxxx"
+                          SendServerPassword="yyyy"
+                          SendServerIsEnableSsl="True">
+</viewModels:ToolViewModel>
