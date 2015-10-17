@@ -140,6 +140,8 @@
                             <Run Text="{x:Static prop:Resources.Settings_Password}" />
                             <Run Text=": " />
                         </TextBlock>
+                        <!--<PasswordBox Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="4" Margin="0,2" Height="25"
+                                     Password="{Binding SendServerPassword, Mode=TwoWay}" />-->
                         <metro:PromptTextBox Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="4" Margin="0,2"
                                                 Prompt="{x:Static prop:Resources.Settings_Password}"
                                                 Text="{Binding SendServerPassword, Mode=TwoWay}" />
