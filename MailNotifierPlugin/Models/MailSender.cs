@@ -45,20 +45,22 @@ namespace MailNotifierPlugin.Models
         /// <summary>
         /// メール送信
         /// </summary>
-        /// <param name="from">差出人メールアドレス</param>
-        /// <param name="to">受信者メールアドレス</param>
+        /// <param name="fromMailAddress">差出人メールアドレス</param>
+        /// <param name="fromDisplayName">差出人表示名</param>
+        /// <param name="toMailAddreaa">受信者メールアドレス</param>
+        /// <param name="toDisplayName">受信者表示名</param>
         /// <param name="subject">件名</param>
         /// <param name="body">本文</param>
         /// <returns>true:成功,false:失敗</returns>
-        public bool Send(MailAddress from, MailAddress to, string subject, string body)
+        public bool Send(string fromMailAddress, string fromDisplayName, string toMailAddress, string toDisplayName, string subject, string body)
         {
             try
             {
                 using (MailMessage msg = new MailMessage())
                 {
                     // メールメッセージ作成
-                    msg.From = from;
-                    msg.To.Add(to);
+                    msg.From = new MailAddress(fromMailAddress, fromDisplayName);
+                    msg.To.Add(new MailAddress(toMailAddress, toDisplayName));
                     msg.Subject = subject;
                     msg.Body = body;
 

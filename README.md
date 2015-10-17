@@ -1,4 +1,6 @@
 # MailNotifierPlugin
+[![Build status (master)](https://img.shields.io/appveyor/ci/Thirdplay/MailNotifierPlugin.svg?style=flat-square)](https://ci.appveyor.com/project/thirdplay/mailnotifierplugin)
+
 通知内容をメールで送信するKanColleViewer用プラグインです。
 
 ### 機能
@@ -11,10 +13,6 @@
 ### ライセンス
 
 * [The MIT License (MIT)](LICENSE.txt)
-
-### ダウンロード
-
-https://github.com/thirdplay/MailNotifierPlugin/releases/latest
 
 ### 使用ライブラリ
 

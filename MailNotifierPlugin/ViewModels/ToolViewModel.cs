@@ -4,6 +4,7 @@ using MailNotifierPlugin.Models.Settings;
 using MailNotifierPlugin.Properties;
 using MetroTrilithon.Lifetime;
 using MetroTrilithon.Mvvm;
+using System.ComponentModel.DataAnnotations;
 using System.Net.Mail;
 
 namespace MailNotifierPlugin.ViewModels
@@ -11,7 +12,7 @@ namespace MailNotifierPlugin.ViewModels
     /// <summary>
     /// ツールビューモデル
     /// </summary>
-    public class ToolViewModel : ViewModel
+    public class ToolViewModel : ValidationViewModel
     {
         #region IsEnabled 変更通知プロパティ
         private bool _IsEnabled;
@@ -31,6 +32,7 @@ namespace MailNotifierPlugin.ViewModels
 
         #region NotifierMailAddress 変更通知プロパティ
         private string _NotifierMailAddress;
+        [EmailAddress(ErrorMessage = "正しいメールアドレスではありません。")]
         public string NotifierMailAddress
         {
             get { return this._NotifierMailAddress; }
@@ -63,6 +65,7 @@ namespace MailNotifierPlugin.ViewModels
 
         #region SenderMailAddress 変更通知プロパティ
         private string _SenderMailAddress;
+        [EmailAddress(ErrorMessage = "正しいメールアドレスではありません。")]
         public string SenderMailAddress
         {
             get { return this._SenderMailAddress; }
@@ -111,6 +114,7 @@ namespace MailNotifierPlugin.ViewModels
 
         #region SendServerPort 変更通知プロパティ
         private int _SendServerPort;
+        [Range(0, 65535, ErrorMessage = "{1}から{2}の数値を入力してください。")]
         public int SendServerPort
         {
             get { return this._SendServerPort; }
@@ -212,8 +216,10 @@ namespace MailNotifierPlugin.ViewModels
                 EnableSsl = this.SendServerIsEnableSsl
             };
             ms.Send(
-                new MailAddress(this.SenderMailAddress, this.SenderDisplayName),
-                new MailAddress(this.NotifierMailAddress, this.NotifierDisplayName),
+                this.SenderMailAddress,
+                this.SenderDisplayName,
+                this.NotifierMailAddress,
+                this.NotifierDisplayName,
                 Resources.SendTest_Subject,
                 Resources.SendTest_Body
             );
