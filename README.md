@@ -1,5 +1,6 @@
 # MailNotifierPlugin
 通知内容をメールで送信するKanColleViewer用プラグインです。
+[![Build status](https://ci.appveyor.com/api/projects/status/o3t6fk2u9glfn6cm?svg=true)](https://ci.appveyor.com/project/thirdplay/mailnotifierplugin)
 
 ### 機能
 * 通知内容のメール送信
