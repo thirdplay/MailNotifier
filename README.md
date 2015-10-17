@@ -12,10 +12,6 @@
 
 * [The MIT License (MIT)](LICENSE.txt)
 
-### ダウンロード
-
-https://github.com/thirdplay/MailNotifierPlugin/releases/latest
-
 ### 使用ライブラリ
 
 以下のライブラリを使用して開発を行っています。
