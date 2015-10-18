@@ -134,6 +134,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\NumericValidationRule.cs" />
     <Compile Include="Models\MailSender.cs" />
     <Compile Include="Models\Settings\MailNotifierSettings.cs" />
     <Compile Include="Models\Settings\Providers.cs" />

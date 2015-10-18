@@ -16,14 +16,56 @@ namespace MailNotifierPlugin.ViewModels
     public class ValidationViewModel : ViewModel, INotifyDataErrorInfo
     {
         /// <summary>
-        /// プロパティ変更通知イベントを発生させます
+        /// 各プロパティのエラー辞書
+        /// </summary>
+        private readonly Dictionary<string, List<string>> _currentErrors = new Dictionary<string, List<string>>();
+
+        #region INotifyDataErrorInfoの実装
+        /// <summary>
+        /// 検証エラーイベント
+        /// </summary>
+        public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
+
+        /// <summary>
+        /// 検証エラー変更イベントを発生させる。
+        /// </summary>
+        /// <param name="propertyName"></param>
+        private void OnErrorsChanged(string propertyName)
+        {
+            this.ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
+        }
+
+        /// <summary>
+        /// 指定したプロパティまたはエンティティ全体の検証エラーを取得します。
         /// </summary>
         /// <param name="propertyName">プロパティ名</param>
-        protected override void RaisePropertyChanged([CallerMemberName] string propertyName = "")
+        /// <returns>検証エラー</returns>
+        public IEnumerable GetErrors(string propertyName)
         {
-            base.RaisePropertyChanged(propertyName);
-            this.ValidateProperty(propertyName);
+            if (this.HasErrors)
+            {
+                if (string.IsNullOrEmpty(propertyName))
+                {
+                    var allErrors = new List<string>();
+                    foreach (var errors in _currentErrors.Values)
+                    {
+                        allErrors.AddRange(errors);
+                    }
+                    return allErrors;
+                }
+                if (_currentErrors.ContainsKey(propertyName))
+                {
+                    return _currentErrors[propertyName];
+                }
+            }
+            return null;
         }
+
+        /// <summary>
+        /// 検証エラーがあるかどうか取得します。
+        /// </summary>
+        public bool HasErrors => _currentErrors.Count > 0;
+        #endregion
 
         /// <summary>
         /// プロパティの入力値を検証する
@@ -45,8 +87,36 @@ namespace MailNotifierPlugin.ViewModels
             }
         }
 
-        #region 発生中のエラーを保持する処理を実装
-        readonly Dictionary<string, List<string>> _currentErrors = new Dictionary<string, List<string>>();
+        /// <summary>
+        /// 全てのプロパティの入力値を検証する
+        /// </summary>
+        /// <param name="propertyName">プロパティ名</param>
+        protected void Validate()
+        {
+            {
+                ClearErrors();
+                object value = this.GetType().GetProperty("NotifierMailAddress").GetValue(this);
+                var context = new ValidationContext(this) { MemberName = "NotifierMailAddress" };
+                var validationErrors = new List<ValidationResult>();
+                if (!Validator.TryValidateProperty(value, context, validationErrors))
+                {
+                }
+            }
+
+            {
+                ClearErrors();
+                var context = new ValidationContext(this);
+                var validationErrors = new List<ValidationResult>();
+                if (!Validator.TryValidateObject(this, context, validationErrors, true))
+                {
+                    var errors = validationErrors.Where(_ => _.MemberNames.Any()).GroupBy(_ => _.MemberNames.First());
+                    foreach (var error in errors)
+                    {
+                        SetErrors(error.Key, error.Select(_ => _.ErrorMessage));
+                    }
+                }
+            }
+        }
 
         /// <summary>
         /// 引数で指定されたプロパティに、errorsで指定されたエラーをすべて登録します。
@@ -75,57 +145,28 @@ namespace MailNotifierPlugin.ViewModels
         }
 
         /// <summary>
-        /// 引数で指定されたプロパティのエラーをすべて解除します。
+        /// 引数で指定されたプロパティのまたはエンティティ全体のエラーをすべて解除します。
         /// </summary>
         /// <param name="propertyName">プロパティ名</param>
-        protected void ClearErrors(string propertyName)
+        protected void ClearErrors(string propertyName = "")
         {
-            if (_currentErrors.ContainsKey(propertyName))
+            if (!string.IsNullOrEmpty(propertyName))
             {
-                _currentErrors.Remove(propertyName);
-                OnErrorsChanged(propertyName);
+                if (_currentErrors.ContainsKey(propertyName))
+                {
+                    _currentErrors.Remove(propertyName);
+                    OnErrorsChanged(propertyName);
+                }
+            }
+            else
+            {
+                while (_currentErrors.Count > 0)
+                {
+                    string key = _currentErrors.First().Key;
+                    _currentErrors.Remove(key);
+                    OnErrorsChanged(key);
+                }
             }
         }
-        #endregion
-
-        #region INotifyDataErrorInfoの実装
-        /// <summary>
-        /// 検証エラーイベント
-        /// </summary>
-        public event EventHandler<DataErrorsChangedEventArgs> ErrorsChanged;
-
-        /// <summary>
-        /// 検証エラー変更イベントを発生させる。
-        /// </summary>
-        /// <param name="propertyName"></param>
-        private void OnErrorsChanged(string propertyName)
-        {
-            this.ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
-        }
-
-        /// <summary>
-        /// 指定したプロパティまたはエンティティ全体の検証エラーを取得します。
-        /// </summary>
-        /// <param name="propertyName">プロパティ名</param>
-        /// <returns>検証エラー</returns>
-        public IEnumerable GetErrors(string propertyName)
-        {
-            if (string.IsNullOrEmpty(propertyName) ||
-                !_currentErrors.ContainsKey(propertyName))
-            {
-                return null;
-            }
-
-            return _currentErrors[propertyName];
-        }
-
-        /// <summary>
-        /// 検証エラーがあるかどうか取得します。
-        /// </summary>
-        public bool HasErrors
-        {
-            get { return _currentErrors.Count > 0; }
-        }
-        #endregion
     }
 }
