@@ -8,7 +8,7 @@ using System.Windows;
 // アセンブリに関連付けられている情報を変更するには、
 // これらの属性値を変更してください。
 [assembly: AssemblyTitle("MailNotifierPlugin")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("提督業も忙しい！ メール通知プラグイン")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("MailNotifierPlugin")]

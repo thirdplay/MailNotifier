@@ -170,4 +170,16 @@
   <data name="Settings_UserName" xml:space="preserve">
     <value>ユーザ名</value>
   </data>
+  <data name="Validation_EmailAddress" xml:space="preserve">
+    <value>正しいメールアドレスではありません。</value>
+  </data>
+  <data name="Validation_Required" xml:space="preserve">
+    <value>必須項目です。</value>
+  </data>
+  <data name="Validation_Range" xml:space="preserve">
+    <value>{1}以上、{2}以下の数値を入力してください。</value>
+  </data>
+  <data name="Validation_Numeric" xml:space="preserve">
+    <value>数値を入力してください。</value>
+  </data>
 </root>

@@ -1,11 +1,9 @@
-﻿using Livet;
-using MailNotifierPlugin.Models;
+﻿using MailNotifierPlugin.Models;
 using MailNotifierPlugin.Models.Settings;
 using MailNotifierPlugin.Properties;
 using MetroTrilithon.Lifetime;
 using MetroTrilithon.Mvvm;
 using System.ComponentModel.DataAnnotations;
-using System.Net.Mail;
 
 namespace MailNotifierPlugin.ViewModels
 {
@@ -25,6 +23,12 @@ namespace MailNotifierPlugin.ViewModels
                 {
                     this._IsEnabled = value;
                     this.RaisePropertyChanged();
+
+                    // メール通知が無効の場合、検証エラーをクリアする
+                    if (!this.IsEnabled)
+                    {
+                        this.ClearErrors();
+                    }
                 }
             }
         }
@@ -32,7 +36,8 @@ namespace MailNotifierPlugin.ViewModels
 
         #region NotifierMailAddress 変更通知プロパティ
         private string _NotifierMailAddress;
-        [EmailAddress(ErrorMessage = "正しいメールアドレスではありません。")]
+        [Required(ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "Validation_Required")]
+        [EmailAddress(ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "Validation_EmailAddress")]
         public string NotifierMailAddress
         {
             get { return this._NotifierMailAddress; }
@@ -49,6 +54,7 @@ namespace MailNotifierPlugin.ViewModels
 
         #region NotifierDisplayName 変更通知プロパティ
         private string _NotifierDisplayName;
+        [Required(ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "Validation_Required")]
         public string NotifierDisplayName
         {
             get { return this._NotifierDisplayName; }
@@ -65,7 +71,8 @@ namespace MailNotifierPlugin.ViewModels
 
         #region SenderMailAddress 変更通知プロパティ
         private string _SenderMailAddress;
-        [EmailAddress(ErrorMessage = "正しいメールアドレスではありません。")]
+        [Required(ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "Validation_Required")]
+        [EmailAddress(ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "Validation_EmailAddress")]
         public string SenderMailAddress
         {
             get { return this._SenderMailAddress; }
@@ -82,6 +89,7 @@ namespace MailNotifierPlugin.ViewModels
 
         #region SenderDisplayName 変更通知プロパティ
         private string _SenderDisplayName;
+        [Required(ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "Validation_Required")]
         public string SenderDisplayName
         {
             get { return this._SenderDisplayName; }
@@ -98,6 +106,7 @@ namespace MailNotifierPlugin.ViewModels
 
         #region SendServerHost 変更通知プロパティ
         private string _SendServerHost;
+        [Required(ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "Validation_Required")]
         public string SendServerHost
         {
             get { return this._SendServerHost; }
@@ -114,7 +123,7 @@ namespace MailNotifierPlugin.ViewModels
 
         #region SendServerPort 変更通知プロパティ
         private int _SendServerPort;
-        [Range(0, 65535, ErrorMessage = "{1}から{2}の数値を入力してください。")]
+        [Range(0, 65535, ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "Validation_Range")]
         public int SendServerPort
         {
             get { return this._SendServerPort; }
@@ -207,22 +216,26 @@ namespace MailNotifierPlugin.ViewModels
         /// </summary>
         public void SendTest()
         {
-            MailSender ms = new MailSender()
+            this.Validate();
+            if (!this.HasErrors)
             {
-                Host = this.SendServerHost,
-                Port = this.SendServerPort,
-                UserName = this.SendServerUserName,
-                Password = this.SendServerPassword,
-                EnableSsl = this.SendServerIsEnableSsl
-            };
-            ms.Send(
-                this.SenderMailAddress,
-                this.SenderDisplayName,
-                this.NotifierMailAddress,
-                this.NotifierDisplayName,
-                Resources.SendTest_Subject,
-                Resources.SendTest_Body
-            );
+                MailSender ms = new MailSender()
+                {
+                    Host = this.SendServerHost,
+                    Port = this.SendServerPort,
+                    UserName = this.SendServerUserName,
+                    Password = this.SendServerPassword,
+                    EnableSsl = this.SendServerIsEnableSsl
+                };
+                ms.Send(
+                    this.SenderMailAddress,
+                    this.SenderDisplayName,
+                    this.NotifierMailAddress,
+                    this.NotifierDisplayName,
+                    Resources.SendTest_Subject,
+                    Resources.SendTest_Body
+                );
+            }
         }
 
         /// <summary>
@@ -230,16 +243,23 @@ namespace MailNotifierPlugin.ViewModels
         /// </summary>
         public void Apply()
         {
-            MailNotifierSettings.IsEnabled.Value = this.IsEnabled;
-            MailNotifierSettings.Notifier.MailAddress.Value = this.NotifierMailAddress;
-            MailNotifierSettings.Notifier.DisplayName.Value = this.NotifierDisplayName;
-            MailNotifierSettings.Sender.MailAddress.Value = this.SenderMailAddress;
-            MailNotifierSettings.Sender.DisplayName.Value = this.SenderDisplayName;
-            MailNotifierSettings.SendServer.Host.Value = this.SendServerHost;
-            MailNotifierSettings.SendServer.Port.Value = this.SendServerPort;
-            MailNotifierSettings.SendServer.UserName.Value = this.SendServerUserName;
-            MailNotifierSettings.SendServer.Password.Value = this.SendServerPassword;
-            MailNotifierSettings.SendServer.IsEnableSsl.Value = this.SendServerIsEnableSsl;
+            if (this.IsEnabled)
+            {
+                this.Validate();
+            }
+            if (!this.HasErrors)
+            {
+                MailNotifierSettings.IsEnabled.Value = this.IsEnabled;
+                MailNotifierSettings.Notifier.MailAddress.Value = this.NotifierMailAddress;
+                MailNotifierSettings.Notifier.DisplayName.Value = this.NotifierDisplayName;
+                MailNotifierSettings.Sender.MailAddress.Value = this.SenderMailAddress;
+                MailNotifierSettings.Sender.DisplayName.Value = this.SenderDisplayName;
+                MailNotifierSettings.SendServer.Host.Value = this.SendServerHost;
+                MailNotifierSettings.SendServer.Port.Value = this.SendServerPort;
+                MailNotifierSettings.SendServer.UserName.Value = this.SendServerUserName;
+                MailNotifierSettings.SendServer.Password.Value = this.SendServerPassword;
+                MailNotifierSettings.SendServer.IsEnableSsl.Value = this.SendServerIsEnableSsl;
+            }
         }
 
         /// <summary>
@@ -257,6 +277,20 @@ namespace MailNotifierPlugin.ViewModels
             this.SendServerUserName = MailNotifierSettings.SendServer.UserName;
             this.SendServerPassword = MailNotifierSettings.SendServer.Password;
             this.SendServerIsEnableSsl = MailNotifierSettings.SendServer.IsEnableSsl;
+        }
+
+        /// <summary>
+        /// 必須チェック
+        /// </summary>
+        private void CheckRequired()
+        {
+            //this.NotifierMailAddress
+            //this.NotifierDisplayName
+            //this.SenderMailAddress
+            //this.SenderDisplayName
+            //this.SendServerHost
+            //this.SendServerPort
+            //this.AddError("", "");
         }
     }
 }
