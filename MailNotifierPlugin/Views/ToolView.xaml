@@ -101,7 +101,6 @@
                     <Grid Margin="0,4">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="76" />
@@ -132,40 +131,45 @@
                                 </Binding>
                             </metro:PromptTextBox.Text>
                         </metro:PromptTextBox>
-                        <Expander Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5" Header="{x:Static prop:Resources.Settings_Auth}">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="76" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <TextBlock HorizontalAlignment="Right" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center">
-                                    <Run Text="{x:Static prop:Resources.Settings_UserName}" />
-                                    <Run Text=": " />
-                                </TextBlock>
-                                <metro:PromptTextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="4" Margin="0,2"
-                                                     Prompt="{x:Static prop:Resources.Settings_UserName}"
-                                                     Text="{Binding SendServerUserName, Mode=TwoWay}" />
-                                <TextBlock HorizontalAlignment="Right" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center">
-                                    <Run Text="{x:Static prop:Resources.Settings_Password}" />
-                                    <Run Text=": " />
-                                </TextBlock>
-                                <PasswordBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="4" Margin="0,2" Height="25">
-                                    <i:Interaction.Behaviors>
-                                        <l:PasswordBoxBindingSupportBehavior Password="{Binding SendServerPassword, Mode=TwoWay}" />
-                                    </i:Interaction.Behaviors>
-                                </PasswordBox>
-                                <CheckBox Grid.Row="2" Grid.Column="1"  Margin="0,2"
-                                          Content="{x:Static prop:Resources.Settings_IsEnabledSsl}"
-                                          IsChecked="{Binding SendServerIsEnableSsl}" />
-                            </Grid>
-                        </Expander>
                     </Grid>
                 </StackPanel>
+                <Expander Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="5"
+                          Margin="0,0,0,8"
+                          Header="{x:Static prop:Resources.Settings_AuthSetting}"
+                          FontSize="14.667" FontFamily="Meiryo UI, Segoe UI Light">
+                    <StackPanel Margin="20,5,0,6">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="76" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock HorizontalAlignment="Right" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center">
+                                    <Run Text="{x:Static prop:Resources.Settings_UserName}" />
+                                    <Run Text=": " />
+                            </TextBlock>
+                            <metro:PromptTextBox Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="4" Margin="0,2"
+                                                     Prompt="{x:Static prop:Resources.Settings_UserName}"
+                                                     Text="{Binding AuthUserName, Mode=TwoWay}" />
+                            <TextBlock HorizontalAlignment="Right" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center">
+                                    <Run Text="{x:Static prop:Resources.Settings_Password}" />
+                                    <Run Text=": " />
+                            </TextBlock>
+                            <PasswordBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="4" Margin="0,2" Height="25">
+                                <i:Interaction.Behaviors>
+                                    <l:PasswordBoxBindingSupportBehavior Password="{Binding AuthPassword, Mode=TwoWay}" />
+                                </i:Interaction.Behaviors>
+                            </PasswordBox>
+                            <CheckBox Grid.Row="2" Grid.Column="1"  Margin="0,2"
+                                          Content="{x:Static prop:Resources.Settings_IsEnabledSsl}"
+                                          IsChecked="{Binding AuthIsEnableSsl}" />
+                        </Grid>
+                    </StackPanel>
+                </Expander>
             </StackPanel>
             <Rectangle Height="1" Style="{DynamicResource SeparatorRectangleStyleKey}" />
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,8,0,4">

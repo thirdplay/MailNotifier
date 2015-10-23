@@ -128,8 +128,8 @@
   <data name="Settings_Apply" xml:space="preserve">
     <value>適用</value>
   </data>
-  <data name="Settings_Auth" xml:space="preserve">
-    <value>認証</value>
+  <data name="Settings_AuthSetting" xml:space="preserve">
+    <value>認証設定</value>
   </data>
   <data name="Settings_Cancel" xml:space="preserve">
     <value>キャンセル</value>

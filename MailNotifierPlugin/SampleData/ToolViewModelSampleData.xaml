@@ -8,7 +8,6 @@
                           SenderDisplayName="提督"
                           SendServerHost="smtp.xxxx.xx.xx"
                           SendServerPort="80"
-                          SendServerUserName="xxxx"
-                          SendServerPassword="yyyy"
-                          SendServerIsEnableSsl="True">
+                          AuthUserName="xxxx"
+                          AuthIsEnableSsl="True">
 </viewModels:ToolViewModel>
