@@ -1,5 +1,8 @@
 ﻿using MetroTrilithon.Serialization;
+using System;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using System.Security;
 
 namespace MailNotifierPlugin.Models.Settings
 {
@@ -75,6 +78,17 @@ namespace MailNotifierPlugin.Models.Settings
             /// </summary>
             public static SerializablePropertyBase<int> Port { get; } = new SerializableProperty<int>(GetKey(), Providers.Local, 25);
 
+            private static string GetKey([CallerMemberName] string propertyName = "")
+            {
+                return nameof(MailNotifierSettings) + "." + nameof(SendServer) + "." + propertyName;
+            }
+        }
+
+        /// <summary>
+        /// 認証設定
+        /// </summary>
+        public class Auth
+        {
             /// <summary>
             /// ユーザ名
             /// </summary>
@@ -83,16 +97,42 @@ namespace MailNotifierPlugin.Models.Settings
             /// <summary>
             /// パスワード
             /// </summary>
-            public static SerializablePropertyBase<string> Password { get; } = new SerializableProperty<string>(GetKey(), Providers.Local, null);
+            private static SerializablePropertyBase<string> Password { get; } = new SerializableProperty<string>(GetKey(), Providers.Local, null);
 
             /// <summary>
             /// SSL有効状態
             /// </summary>
             public static SerializablePropertyBase<bool> IsEnableSsl { get; } = new SerializableProperty<bool>(GetKey(), Providers.Local, false);
 
+            /// <summary>
+            /// 元のパスワード
+            /// </summary>
+            public static string SourcePassword
+            {
+                get
+                {
+                    try
+                    {
+                        return !string.IsNullOrEmpty(Password)
+                            ? Cipher.DecryptString(Password, Environment.UserName)
+                            : Password;
+                    }
+                    catch
+                    {
+                        return "";
+                    }
+                }
+                set
+                {
+                    Password.Value = !string.IsNullOrEmpty(value)
+                        ? Cipher.EncryptString(value, Environment.UserName)
+                        : value;
+                }
+            }
+
             private static string GetKey([CallerMemberName] string propertyName = "")
             {
-                return nameof(MailNotifierSettings) + "." + nameof(SendServer) + "." + propertyName;
+                return nameof(MailNotifierSettings) + "." + nameof(Auth) + "." + propertyName;
             }
         }
     }

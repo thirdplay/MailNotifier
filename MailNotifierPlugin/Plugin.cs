@@ -79,9 +79,9 @@ namespace MailNotifierPlugin
             {
                 this.mailSender.Host = MailNotifierSettings.SendServer.Host;
                 this.mailSender.Port = MailNotifierSettings.SendServer.Port;
-                this.mailSender.UserName = MailNotifierSettings.SendServer.UserName;
-                this.mailSender.Password = MailNotifierSettings.SendServer.Password;
-                this.mailSender.EnableSsl = MailNotifierSettings.SendServer.IsEnableSsl;
+                this.mailSender.UserName = MailNotifierSettings.Auth.UserName;
+                this.mailSender.Password = MailNotifierSettings.Auth.SourcePassword;
+                this.mailSender.EnableSsl = MailNotifierSettings.Auth.IsEnableSsl;
                 this.mailSender.Send(
                     MailNotifierSettings.Sender.MailAddress,
                     MailNotifierSettings.Sender.DisplayName,

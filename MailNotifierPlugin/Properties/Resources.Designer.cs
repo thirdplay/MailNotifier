@@ -88,11 +88,11 @@ namespace MailNotifierPlugin.Properties {
         }
         
         /// <summary>
-        ///   認証 に類似しているローカライズされた文字列を検索します。
+        ///   認証設定 に類似しているローカライズされた文字列を検索します。
         /// </summary>
-        public static string Settings_Auth {
+        public static string Settings_AuthSetting {
             get {
-                return ResourceManager.GetString("Settings_Auth", resourceCulture);
+                return ResourceManager.GetString("Settings_AuthSetting", resourceCulture);
             }
         }
         

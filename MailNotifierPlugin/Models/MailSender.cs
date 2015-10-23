@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Mail;
+using System.Security;
 using System.Windows;
 
 namespace MailNotifierPlugin.Models
@@ -117,15 +118,16 @@ namespace MailNotifierPlugin.Models
                     // 遠征情報の取得
                     Expedition expedition = fleet.Expedition;
 
-                    // 遠征中の場合、残り時間を取得する
-                    String remaining = "";
+                    // 遠征中の場合、終了時刻と残り時間を取得する
+                    String returnTime = "";
                     if (expedition.IsInExecution)
                     {
-                        remaining = expedition.Remaining.Value.ToString(@"hh\:mm\:ss");
+                        returnTime = expedition.ReturnTime?.LocalDateTime.ToString("MM/dd HH:mm") ?? "--/-- --:--";
+                        returnTime += " (" + expedition.Remaining?.ToString(@"hh\:mm\:ss") + ")";
                     }
 
                     // 本文に遠征状況を追加
-                    body += String.Format("/{0} - {1}", fleet.Id, remaining) + Environment.NewLine;
+                    body += String.Format("/{0} - {1}", fleet.Id, returnTime) + Environment.NewLine;
                 }
             }
             return body;

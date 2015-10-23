@@ -136,6 +136,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\NumericValidationRule.cs" />
+    <Compile Include="Models\Cipher.cs" />
     <Compile Include="Models\MailSender.cs" />
     <Compile Include="Models\Settings\MailNotifierSettings.cs" />
     <Compile Include="Models\Settings\Providers.cs" />
@@ -175,6 +176,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
