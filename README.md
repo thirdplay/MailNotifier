@@ -1,7 +1,6 @@
 # MailNotifierPlugin
 [![Build status (master)](https://img.shields.io/appveyor/ci/Thirdplay/MailNotifierPlugin.svg?style=flat-square)](https://ci.appveyor.com/project/thirdplay/mailnotifierplugin)
 [![Release](https://img.shields.io/github/release/Thirdplay/MailNotifierPlugin.svg?style=flat-square)](https://github.com/Thirdplay/MailNotifierPlugin/releases/latest)
-[![Downloads](https://img.shields.io/github/downloads/Thirdplay/MailNotifierPlugin/latest/total.svg?style=flat-square)](https://github.com/Thirdplay/MailNotifierPlugin/releases/latest)
 
 通知内容（建造完了、遠征帰投、入渠完了、疲労回復）をメールで送信するKanColleViewer用プラグインです。
 
